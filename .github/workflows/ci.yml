@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "master" ]
   pull_request:
@@ -477,14 +478,14 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        meson setup build -Dbuildtype=release --default-library=static -Dbuild_tests=true -Dc_args="$env:CFLAGS"
+        meson setup build -Dbuildtype=release --default-library=static -Dbuild_tests=true -Dc_args="$env:CFLAGS" -Dwarning_level=3 -Dwerror=true
         meson test -C build
 
     - name: Build with meson (Unix)
       if: runner.os != 'Windows'
       shell: bash
       run: |
-        meson setup build -Dbuildtype=release --default-library=static -Dbuild_tests=true -Dc_args="$CFLAGS"
+        meson setup build -Dbuildtype=release --default-library=static -Dbuild_tests=true -Dc_args="$CFLAGS" -Dwarning_level=3 -Dwerror=true
         meson test -C build
 
   build_msbuild:
